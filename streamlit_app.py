@@ -2,20 +2,7 @@ import streamlit as st
 import pickle
 import numpy as np
 import os
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.preprocessing import LabelEncoder, StandardScaler, OrdinalEncoder
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from sklearn.tree import DecisionTreeClassifier
-import xgboost as xgb
-from sklearn.model_selection import GridSearchCV, StratifiedKFold
-from sklearn.metrics import f1_score, accuracy_score, confusion_matrix, precision_score, recall_score, roc_curve, auc
-import time
+
 
 
 # Check if the pickle file exists
