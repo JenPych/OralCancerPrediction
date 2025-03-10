@@ -219,6 +219,6 @@ results_df = pd.DataFrame(result)
 print(results_df)
 
 # Pickle the trained models
-# with open('oral_cancer_trained_models.pkl', 'wb') as f:
-#     pickle.dump(trained_models, f)
+with open('oral_cancer_trained_models.pkl', 'wb') as f:
+    pickle.dump(trained_models, f)
 
