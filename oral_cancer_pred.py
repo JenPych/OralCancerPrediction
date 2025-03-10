@@ -50,30 +50,30 @@ cat_columns = ['Country', 'Gender', 'Tobacco Use', 'Alcohol Consumption', 'HPV I
 
 num_columns = [col for col in df.columns if col not in cat_columns and col != 'Oral Cancer (Diagnosis)']
 
-# for cols in cat_columns:
-#     plt.figure(figsize=(10, 5))
-#     counter = sns.countplot(data=df, x=cols, hue='Oral Cancer (Diagnosis)', palette='coolwarm')
-#     counter.bar_label(counter.containers[0], fontsize=7)
-#     counter.bar_label(counter.containers[1], fontsize=7)
-#     plt.xticks(rotation=45)
-#     plt.title(f'Countplot of {cols}')
-#     plt.savefig(os.path.join(save_dir, cols))
-#     # print(plt.show())
-#     plt.close()
-#
-# for cols in num_columns:
-#     plt.figure(figsize=(10, 5))
-#     hist = sns.histplot(data=df, x=cols, hue='Oral Cancer (Diagnosis)', palette='coolwarm', kde=True)
-#     plt.title(f'Histogram plot of {cols}')
-#     plt.savefig(os.path.join(save_dir, cols))
-#     # print(plt.show())
-#     plt.close()
-#
-# sns.heatmap(data=df.corr(numeric_only=True), annot=True, fmt='.2f')
-# plt.title("Correlation of numerical data")
-# plt.savefig(os.path.join(save_dir, "Correlation.png"))
-# # print(plt.show())
-# plt.close()
+for cols in cat_columns:
+    plt.figure(figsize=(10, 5))
+    counter = sns.countplot(data=df, x=cols, hue='Oral Cancer (Diagnosis)', palette='coolwarm')
+    counter.bar_label(counter.containers[0], fontsize=7)
+    counter.bar_label(counter.containers[1], fontsize=7)
+    plt.xticks(rotation=45)
+    plt.title(f'Countplot of {cols}')
+    plt.savefig(os.path.join(save_dir, cols))
+    # print(plt.show())
+    plt.close()
+
+for cols in num_columns:
+    plt.figure(figsize=(10, 5))
+    hist = sns.histplot(data=df, x=cols, hue='Oral Cancer (Diagnosis)', palette='coolwarm', kde=True)
+    plt.title(f'Histogram plot of {cols}')
+    plt.savefig(os.path.join(save_dir, cols))
+    # print(plt.show())
+    plt.close()
+
+sns.heatmap(data=df.corr(numeric_only=True), annot=True, fmt='.2f')
+plt.title("Correlation of numerical data")
+plt.savefig(os.path.join(save_dir, "Correlation.png"))
+# print(plt.show())
+plt.close()
 
 # DISTINGUISHING PRE- DIAGNOSIS DATA and POST- DIAGNOSIS DATA
 pre_diag = ['Gender', 'Tobacco Use', 'Alcohol Consumption', 'HPV Infection', 'Betel Quid Use', 'Chronic Sun Exposure',
@@ -172,38 +172,38 @@ for model_name, model in models.items():
     recall = recall_score(y_true=y_test, y_pred= y_pred)
     cm = confusion_matrix(y_true=y_test, y_pred=y_pred)
 
-    # Confusion Matrix Diagram
-    # plt.figure()
-    # sns.heatmap(data=cm, annot=True, cmap='coolwarm', fmt='.2f')
-    # plt.xlabel("Predicted")
-    # plt.ylabel("Actual")
-    # plt.title(f"Confusion Matrix using {model}")
-    # plt.savefig(os.path.join(save_dir, f"Confusion Matrix using {model.__class__.__name__}"))
-    # print(plt.show())
-    # plt.close()
+    Confusion Matrix Diagram
+    plt.figure()
+    sns.heatmap(data=cm, annot=True, cmap='coolwarm', fmt='.2f')
+    plt.xlabel("Predicted")
+    plt.ylabel("Actual")
+    plt.title(f"Confusion Matrix using {model}")
+    plt.savefig(os.path.join(save_dir, f"Confusion Matrix using {model.__class__.__name__}"))
+    print(plt.show())
+    plt.close()
 
     if model_name == 'XGBoost':
         fpr, tpr, thresholds = roc_curve(y_test, best_model.predict_proba(X_test)[:, 1])
         roc_auc = auc(fpr, tpr)
-        # plt.figure()
-        # plt.plot(fpr, tpr, label=f'ROC curve (area = {roc_auc:.2f})')
-        # plt.plot([0, 1], [0, 1], 'k--')
-        # plt.xlabel('False Positive Rate')
-        # plt.ylabel('True Positive Rate')
-        # plt.title(f'ROC Curve ({model_name})')
-        # plt.legend(loc='lower right')
-        # plt.savefig(os.path.join(save_dir, f"{model_name}_ROC_Curve.png"))
-        # plt.close()
+        plt.figure()
+        plt.plot(fpr, tpr, label=f'ROC curve (area = {roc_auc:.2f})')
+        plt.plot([0, 1], [0, 1], 'k--')
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title(f'ROC Curve ({model_name})')
+        plt.legend(loc='lower right')
+        plt.savefig(os.path.join(save_dir, f"{model_name}_ROC_Curve.png"))
+        plt.close()
 
         feature_importance = best_model.feature_importances_
         feature_names = pre_X.columns
         importance_df = pd.DataFrame({'Feature': feature_names, 'Importance': feature_importance})
         importance_df = importance_df.sort_values(by='Importance', ascending=False)
-        # plt.figure(figsize=(10, 6))
-        # sns.barplot(x='Importance', y='Feature', data=importance_df)
-        # plt.title(f'{model_name} Feature Importance')
-        # plt.savefig(os.path.join(save_dir, f"{model_name}_Feature_Importance.png"))
-        # plt.close()
+        plt.figure(figsize=(10, 6))
+        sns.barplot(x='Importance', y='Feature', data=importance_df)
+        plt.title(f'{model_name} Feature Importance')
+        plt.savefig(os.path.join(save_dir, f"{model_name}_Feature_Importance.png"))
+        plt.close()
 
     result.append({
         'Model': model_name,
