@@ -5,9 +5,13 @@ import numpy as np
 # Load the trained models from the pickle file
 @st.cache_resource  # Cache the model loading for better performance
 def load_models():
-    with open('oral_cancer_trained_models.pkl', 'rb') as f:
-        trained_models = pickle.load(f)
-    return trained_models
+    try:
+     with open('oral_cancer_trained_models.pkl', 'rb') as f:
+         trained_models = pickle.load(f)
+     return trained_models
+    except Exception as e:
+        st.error(f"Error loading models: {e}")
+        return None
 
 trained_models = load_models()
 
