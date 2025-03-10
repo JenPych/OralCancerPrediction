@@ -1,19 +1,31 @@
 import streamlit as st
 import pickle
 import numpy as np
+import os
+
+# Check if the pickle file exists
+if not os.path.exists('oral_cancer_trained_models.pkl'):
+    st.error("The pickle file 'oral_cancer_trained_models.pkl' was not found.")
+    st.stop()
 
 # Load the trained models from the pickle file
-@st.cache_resource  # Cache the model loading for better performance
+@st.cache_resource
 def load_models():
     try:
-     with open('oral_cancer_trained_models.pkl', 'rb') as f:
-         trained_models = pickle.load(f)
-     return trained_models
+        with open('oral_cancer_trained_models.pkl', 'rb') as f:
+            trained_models = pickle.load(f)
+        return trained_models
+    except FileNotFoundError:
+        st.error("Error: The pickle file 'oral_cancer_trained_models.pkl' was not found.")
     except Exception as e:
         st.error(f"Error loading models: {e}")
-        return None
+    return None
 
 trained_models = load_models()
+
+if trained_models is None:
+    st.error("Failed to load models. Please check the pickle file and dependencies.")
+    st.stop()
 
 # Streamlit UI
 st.title("Oral Cancer Prediction")
@@ -65,18 +77,21 @@ model = trained_models[model_name]
 
 # Predict button
 if st.sidebar.button("Predict"):
-    # Make prediction
-    prediction = model.predict(input_data)
-    prediction_proba = model.predict_proba(input_data)
+    try:
+        # Make prediction
+        prediction = model.predict(input_data)
+        prediction_proba = model.predict_proba(input_data)
 
-    # Display results
-    st.subheader("Prediction Result")
-    if prediction[0] == 1:
-        st.error("The model predicts **Positive** for oral cancer.")
-    else:
-        st.success("The model predicts **Negative** for oral cancer.")
+        # Display results
+        st.subheader("Prediction Result")
+        if prediction[0] == 1:
+            st.error("The model predicts **Positive** for oral cancer.")
+        else:
+            st.success("The model predicts **Negative** for oral cancer.")
 
-    pred_positive = prediction_proba[0][1]
-    pred_negative =prediction_proba[0][0]
-    st.write(f"Probability of Positive Class: {pred_positive *100:.2f}%")
-    st.write(f"Probability of Negative Class: {pred_negative*100:.2f}%")
+        pred_positive = prediction_proba[0][1]
+        pred_negative = prediction_proba[0][0]
+        st.write(f"Probability of Positive Class: {pred_positive * 100:.2f}%")
+        st.write(f"Probability of Negative Class: {pred_negative * 100:.2f}%")
+    except Exception as e:
+        st.error(f"Error making prediction: {e}")
