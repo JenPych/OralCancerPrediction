@@ -172,7 +172,7 @@ for model_name, model in models.items():
     recall = recall_score(y_true=y_test, y_pred= y_pred)
     cm = confusion_matrix(y_true=y_test, y_pred=y_pred)
 
-    Confusion Matrix Diagram
+# Confusion Matrix Diagram
     plt.figure()
     sns.heatmap(data=cm, annot=True, cmap='coolwarm', fmt='.2f')
     plt.xlabel("Predicted")
